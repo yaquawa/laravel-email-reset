@@ -18,6 +18,9 @@ trait ResetEmail
     }
 
     /**
+     * This method will be called if the token is invalid.
+     * Should return a response that representing the token is invalid.
+     *
      * @param $status
      *
      * @return mixed
@@ -28,6 +31,10 @@ trait ResetEmail
     }
 
     /**
+     * This method will be called if the token is valid.
+     * New email will be set for the user.
+     * Should return a response that representing the email reset has succeeded.
+     *
      * @param $status
      *
      * @return mixed
@@ -38,6 +45,8 @@ trait ResetEmail
     }
 
     /**
+     * The redirect path for failure.
+     *
      * @return string
      */
     protected function redirectPathForFailure(): string
@@ -46,6 +55,8 @@ trait ResetEmail
     }
 
     /**
+     * The redirect path for success.
+     *
      * @return string
      */
     protected function redirectPathForSuccess(): string

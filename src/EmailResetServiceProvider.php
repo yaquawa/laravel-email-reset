@@ -39,7 +39,7 @@ class EmailResetServiceProvider extends ServiceProvider
      */
     protected function registerMigrations()
     {
-        if (Config::defaultDriverConfig('prevent-run-migrations')) {
+        if (Config::defaultDriverConfig('ignore-migrations')) {
             return;
         }
 
@@ -49,7 +49,7 @@ class EmailResetServiceProvider extends ServiceProvider
     protected function publishAssets()
     {
         $this->publishes([
-            __DIR__ . '/../Http/Controllers' => base_path('app/Http/Controllers/Auth'),
+            __DIR__ . '/Http/Controllers' => base_path('app/Http/Controllers/Auth'),
         ], 'email-reset-controllers');
     }
 

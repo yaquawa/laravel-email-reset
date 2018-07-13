@@ -13,7 +13,7 @@ trait CanResetEmail
     /**
      * Notify the user to verify the new email.
      *
-     * @see \Yaquawa\Laravel\EmailReset\Notifications for customize the mail contents.
+     * @see \Yaquawa\Laravel\EmailReset\Notifications\EmailResetNotification for customize the mail contents.
      *
      * @param string $newEmail
      */

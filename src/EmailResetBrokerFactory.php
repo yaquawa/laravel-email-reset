@@ -3,6 +3,7 @@
 namespace Yaquawa\Laravel\EmailReset;
 
 use InvalidArgumentException;
+use Illuminate\Support\Str;
 use Yaquawa\Laravel\TokenRepository\DatabaseTokenRepository;
 use Yaquawa\Laravel\EmailReset\Contracts\EmailResetBroker as EmailResetBrokerInterface;
 

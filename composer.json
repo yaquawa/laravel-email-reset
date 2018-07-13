@@ -1,0 +1,41 @@
+{
+    "name": "yaquawa/laravel-email-reset",
+    "description": "Laravel package for email reset.",
+    "keywords": [
+        "email",
+        "laravel"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/yaquawa/laravel-email-reset",
+    "support": {
+        "issues": "https://github.com/yaquawa/laravel-email-reset/issues",
+        "source": "https://github.com/yaquawa/laravel-email-reset"
+    },
+    "authors": [
+        {
+            "name": "yaquawa",
+            "email": "yaquawa@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "illuminate/support": "~5.6",
+        "illuminate/auth": "~5.6",
+        "illuminate/http": "~5.6",
+        "yaquawa/laravel-token-repository": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yaquawa\\Laravel\\EmailReset\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yaquawa\\Laravel\\EmailReset\\EmailResetServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

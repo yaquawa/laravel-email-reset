@@ -5,7 +5,7 @@ namespace Yaquawa\Laravel\EmailReset\Notifications;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Yaquawa\Laravel\EmailReset\EmailResetBrokerFactory;
+use Yaquawa\Laravel\EmailReset\Config;
 
 class EmailResetNotification extends Notification
 {
@@ -62,19 +62,16 @@ class EmailResetNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $driver    = EmailResetBrokerFactory::getDefaultDriver();
-        $config    = EmailResetBrokerFactory::getConfig($driver);
-        $route     = $config['route'] ?? 'email/reset/{token}';
-        $resetLink = str_replace('{token}', $this->token, $route);
+        $resetLink = route('email-reset', $this->token);
 
         if (static::$toMailCallback) {
             return \call_user_func(static::$toMailCallback, $notifiable, $this->token, $resetLink);
         }
 
         return (new MailMessage)
-            ->line('You are receiving this email because we received a email reset request for your account.')
-            ->action('Reset Email', url(config('app.url') . route('email-reset', $this->token, false)))
-            ->line('If you did not request a email reset, no further action is required.');
+            ->line(trans()->getFromJson('laravel-email-reset::You are receiving this email because we received a email reset request for your account.'))
+            ->action(trans()->getFromJson('laravel-email-reset::Reset Email'), $resetLink)
+            ->line(trans()->getFromJson('laravel-email-reset::If you did not request a email reset, no further action is required.'));
     }
 
     /**

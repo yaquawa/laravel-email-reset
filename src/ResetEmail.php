@@ -27,7 +27,7 @@ trait ResetEmail
      */
     protected function sendResetFailedResponse(string $status)
     {
-        return redirect($this->redirectPathForFailure())->withErrors(['email-reset' => trans($status)]);
+        return redirect($this->redirectPathForFailure())->withErrors(['laravel-email-reset' => trans($status)]);
     }
 
     /**
@@ -41,7 +41,7 @@ trait ResetEmail
      */
     protected function sendResetResponse(string $status)
     {
-        return redirect($this->redirectPathForSuccess())->with('status', trans($status));
+        return redirect($this->redirectPathForSuccess())->with('laravel-email-reset', trans($status));
     }
 
     /**

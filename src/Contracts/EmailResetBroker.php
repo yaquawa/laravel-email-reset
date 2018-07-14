@@ -11,14 +11,14 @@ interface EmailResetBroker
      *
      * @var string
      */
-    public const EMAIL_RESET = 'EmailReset::Reset';
+    public const EMAIL_RESET = 'laravel-email-reset::messages.EMAIL_RESET';
 
     /**
      * Constant representing an invalid token.
      *
      * @var string
      */
-    public const INVALID_TOKEN = 'EmailReset::InvalidToken';
+    public const INVALID_TOKEN = 'laravel-email-reset::messages.INVALID_TOKEN';
 
     /**
      * Send a token to user for resetting the user's email.

@@ -84,10 +84,17 @@ class EmailResetBrokerFactory
         );
     }
 
-    public static function payloadFilter(array $payLoad, $user)
+    /**
+     * Modify the record before inserting into the database.
+     *
+     * @param array $payLoad
+     * @param $user
+     *
+     * @return array
+     */
+    public static function payloadFilter(array $payLoad, $user): array
     {
-        $payLoad['email']     = $user->email;
-        $payLoad['new_email'] = $user->email;
+        $payLoad['new_email'] = $user->new_email;
 
         return $payLoad;
     }

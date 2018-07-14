@@ -7,14 +7,14 @@ To get started, follow the following steps.
 
 #### Configuration
 
-Add the following code to your `<config/auth.php>`.
+Add the following code to your `<config/auth.php>` file.
 
 ```php
 'defaults' => [
     'guard'       => 'web',
     'passwords'   => 'users',
     'email-reset' => 'default' // Add this line
-]
+],
 
 // Add this entire block
 'email-reset' => [
@@ -22,7 +22,7 @@ Add the following code to your `<config/auth.php>`.
         'table'  => 'email_resets',
         'expire' => 60,
         // 'ignore-migrations' => true,
-    ],
+    ]
 ]
 ```
 
@@ -30,15 +30,22 @@ Add the following code to your `<config/auth.php>`.
  
 `php artisan migrate`
 
-If you would like use your own migration, set `ignore-migrations` to `true` in the config file.
+If you would like to use your own migration, set `ignore-migrations` to `true` in the config file.
 
-#### Publish the controller
+#### Publish the assets
 
-`php artisan vendor:publish --tag=email-reset-controllers`
+The following command publishes the package's controller and translation files to your app's directories.
+
+`php artisan vendor:publish --tag=laravel-email-reset`
+
+| Asset        | Location                                             |
+| ------------ | ---------------------------------------------------- |
+| Controller   | `app/Http/Controllers/Auth/ResetEmailController.php` |
+| Translations | `resources/lang/vendor/laravel-email-reset`          |
 
 #### Use the `CanResetEmail` trait
 
-In your `app/Models/User.php` file, use the `CanResetEmail` trait.
+In your `app/Models/User.php` file, use the `CanResetEmail` trait. This trait adds a `resetEmail` method to the user model.
 
 ```php
 namespace App\Models;
@@ -53,6 +60,8 @@ class User extends Authenticatable
 
 ## Usage
 
+### Send the verification email
+
 ```php
 // By calling the `resetEmail` method of `User` instance,
 // an verification email will be sent to the user's current email address.
@@ -61,7 +70,7 @@ class User extends Authenticatable
 $user->resetEmail('new_email@example.com');
 ```
 
-If you want to change the email content, you can do something like this in your `AppServiceProvider.php`.
+If you want to change the email contents, you can do something like this in your `AppServiceProvider.php`.
 
 ```php
 namespace App\Providers;
@@ -89,8 +98,8 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-After the user clicked the verification link, by default the user will be redirected to the root of your app url.
-You can change this behavior by modify the published controller.
+After the user clicked the verification link, by default, the user will be redirected to the root of your app URL.
+You can change this behavior by overriding the methods of the published controller `ResetEmailController`.
 
 ```php
 namespace App\Http\Controllers\Auth;
@@ -112,7 +121,7 @@ class ResetEmailController extends Controller
      */
     protected function sendResetFailedResponse(string $status)
     {
-        return redirect($this->redirectPathForFailure())->withErrors(['email-reset' => trans($status)]);
+        return redirect($this->redirectPathForFailure())->withErrors(['laravel-email-reset' => trans($status)]);
     }
 
     /**
@@ -126,7 +135,7 @@ class ResetEmailController extends Controller
      */
     protected function sendResetResponse(string $status)
     {
-        return redirect($this->redirectPathForSuccess())->with('status', trans($status));
+        return redirect($this->redirectPathForSuccess())->with('laravel-email-reset', trans($status));
     }
 
     /**
@@ -150,4 +159,13 @@ class ResetEmailController extends Controller
     }
     
 }
+```
+
+### Retrieve the "new email"
+
+The new email won't be saved until the user clicks the verification link.
+Before user clicking the verification link you can get the new email by:
+
+```php
+$user->new_email; // retrieve the `new_email` from database
 ```

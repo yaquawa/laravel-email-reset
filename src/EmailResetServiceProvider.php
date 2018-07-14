@@ -29,7 +29,14 @@ class EmailResetServiceProvider extends ServiceProvider
             $this->publishAssets();
         }
 
-        $this->registerRoute();
+        $this->registerRoutes();
+        $this->registerTranslations();
+    }
+
+    protected function registerTranslations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'laravel-email-reset');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../resources/lang');
     }
 
     /**
@@ -37,7 +44,7 @@ class EmailResetServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerMigrations()
+    protected function registerMigrations(): void
     {
         if (Config::defaultDriverConfig('ignore-migrations')) {
             return;
@@ -46,19 +53,23 @@ class EmailResetServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
-    protected function publishAssets()
+    protected function publishAssets(): void
     {
         $this->publishes([
             __DIR__ . '/Http/Controllers' => base_path('app/Http/Controllers/Auth'),
-        ], 'email-reset-controllers');
+        ], 'laravel-email-reset');
+
+        $this->publishes([
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/laravel-email-reset'),
+        ], 'laravel-email-reset');
     }
 
-    public function registerRoute()
+    public function registerRoutes(): void
     {
         if ( ! $this->app->routesAreCached()) {
             $route = Config::defaultDriverConfig('route') ?? 'email/reset/{token}';
 
-            Route::middleware('auth')->get($route, 'App\Http\Controllers\Controller\ResetEmailController@reset')->name('email-reset');
+            Route::middleware(['web', 'auth'])->get($route, 'App\Http\Controllers\Auth\ResetEmailController@reset')->name('email-reset');
         }
 
     }

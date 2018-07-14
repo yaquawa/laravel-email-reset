@@ -1,3 +1,10 @@
+A Laravel package for resetting user email by sending a verification link to the new email.
+
+This package reset the user's email by:
+
+1. Send verification link to user's new email.
+2. If the user clicks the verification link in their new email, the package will verify the new email and set the old email to the new one.
+
 ## How to install
 To get started, follow the following steps.
 

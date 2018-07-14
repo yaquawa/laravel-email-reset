@@ -13,6 +13,12 @@ trait CanResetEmail
     protected $newEmail;
 
     /**
+     * Determine if use the new email for notification.
+     * @var bool
+     */
+    protected $useNewEmailForNotification = false;
+
+    /**
      * Notify the user to verify the new email.
      *
      * @see \Yaquawa\Laravel\EmailReset\Notifications\EmailResetNotification for customize the mail contents.
@@ -22,10 +28,12 @@ trait CanResetEmail
     public function resetEmail(string $newEmail): void
     {
         $this->newEmail = $newEmail;
-        $this->email    = $newEmail;
         EmailResetBrokerFactory::broker()->sendToken($this);
     }
 
+    /**
+     * @return null|string
+     */
     public function getNewEmailAttribute(): ?string
     {
         if ($this->newEmail) {
@@ -39,5 +47,47 @@ trait CanResetEmail
         }
 
         return null;
+    }
+
+    /**
+     * @param bool|null $use
+     *
+     * @return bool
+     */
+    public function useNewEmailForNotification(bool $use = null): bool
+    {
+        if ($use) {
+            return $this->useNewEmailForNotification = $use;
+        }
+
+        return $this->useNewEmailForNotification;
+    }
+
+    /**
+     * @param callable $callback
+     *
+     * @return $this
+     */
+    public function useNewEmailForNotificationOnce(callable $callback): self
+    {
+        $this->useNewEmailForNotification(true);
+
+        $callback($this);
+
+        $this->useNewEmailForNotification(false);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function routeNotificationForMail(): string
+    {
+        if ($this->useNewEmailForNotification && $this->newEmail) {
+            return $this->newEmail;
+        }
+
+        return $this->email;
     }
 }

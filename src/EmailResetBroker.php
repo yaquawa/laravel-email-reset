@@ -38,9 +38,11 @@ class EmailResetBroker implements EmailResetBrokerInterface
     {
         $token = $this->createToken($user);
 
-        $user->notify(
-            new EmailResetNotification($token, $user)
-        );
+        $user->useNewEmailForNotificationOnce(function ($user) use ($token) {
+            $user->notify(
+                new EmailResetNotification($token, $user)
+            );
+        });
 
         return $token;
     }

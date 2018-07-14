@@ -29,6 +29,7 @@ Add the following code to your `<config/auth.php>` file.
         'table'  => 'email_resets',
         'expire' => 60,
         // 'ignore-migrations' => true,
+        // 'route' => 'email/reset/{token}',
     ]
 ]
 ```
@@ -37,7 +38,7 @@ Add the following code to your `<config/auth.php>` file.
  
 `php artisan migrate`
 
-If you would like to use your own migration, set `ignore-migrations` to `true` in the config file.
+If you would like to use your own migration, set `ignore-migrations` to `true` in the config file (See the migration file [here](https://github.com/yaquawa/laravel-email-reset/blob/master/database/migrations/2018_06_01_000001_create_email_resets_table.php)).
 
 #### Publish the assets
 
@@ -71,8 +72,10 @@ class User extends Authenticatable
 
 ```php
 // By calling the `resetEmail` method of `User` instance,
-// an verification email will be sent to the user's current email address.
-// If the user clicked the verification link, the new email address will be set. 
+// an verification email will be sent to the user's new email address.
+// If the user clicked the verification link, the new email address will be set.
+
+// * The route of the verification link can be set at `route` in the config file.
  
 $user->resetEmail('new_email@example.com');
 ```

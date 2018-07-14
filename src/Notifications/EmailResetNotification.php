@@ -68,10 +68,16 @@ class EmailResetNotification extends Notification
             return \call_user_func(static::$toMailCallback, $notifiable, $this->token, $resetLink);
         }
 
+        $translationParameters = [
+            'user_name' => $notifiable->name,
+            'old_email' => $notifiable->email,
+            'new_email' => $notifiable->new_email,
+        ];
+
         return (new MailMessage)
-            ->line(trans()->getFromJson('laravel-email-reset::You are receiving this email because we received a email reset request for your account.'))
-            ->action(trans()->getFromJson('laravel-email-reset::Reset Email'), $resetLink)
-            ->line(trans()->getFromJson('laravel-email-reset::If you did not request a email reset, no further action is required.'));
+            ->line(trans()->getFromJson('You are receiving this email because we received a email reset request for your account.', $translationParameters))
+            ->action(trans()->getFromJson('Reset Email', $translationParameters), $resetLink)
+            ->line(trans()->getFromJson('If you did not request a email reset, no further action is required.', $translationParameters));
     }
 
     /**

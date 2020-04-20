@@ -28,6 +28,7 @@ Add the following code to your `<config/auth.php>` file.
     'default' => [
         'table'  => 'email_resets',
         'expire' => 60,
+        'callback' => 'App\Http\Controllers\Auth\ResetEmailController@reset',
         // 'ignore-migrations' => true,
         // 'route' => 'email/reset/{token}',
     ]

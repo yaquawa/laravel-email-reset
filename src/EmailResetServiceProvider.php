@@ -69,7 +69,7 @@ class EmailResetServiceProvider extends ServiceProvider
         if ( ! $this->app->routesAreCached()) {
             $route = Config::defaultDriverConfig('route') ?? 'email/reset/{token}';
 
-            Route::middleware(['web', 'auth'])->get($route, 'App\Http\Controllers\Auth\ResetEmailController@reset')->name('email-reset');
+            Route::middleware(['web', 'auth'])->get($route, Config::defaultDriverConfig('callback'))->name('email-reset');
         }
 
     }
